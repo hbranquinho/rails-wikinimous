@@ -1,6 +1,23 @@
 require 'faker'
 
-10.times do
-  Article.create(title: Faker::Hacker.noun,
-                  content: Faker::Hacker.say_something_smart)
+Article.destroy_all
+
+def fake_content
+  paragraphs = []
+  paragraphs << Faker::Lorem.paragraph
+  paragraphs << "![](http://lorempixel.com/800/300/city/)"
+  paragraphs << "## #{Faker::Company.catch_phrase}"
+  paragraphs << Faker::Lorem.paragraphs
+  paragraphs << "**#{Faker::Lorem.word}** #{Faker::Lorem.sentences.join}"
+  paragraphs << "## #{Faker::Company.catch_phrase}"
+  paragraphs << "#{Faker::Lorem.sentences.join} [#{Faker::Commerce.product_name}](#{Faker::Internet.url}) #{Faker::Lorem.sentences.join}"
+  paragraphs << Faker::Lorem.paragraphs
+  paragraphs.flatten.join("\n\n")
+end
+
+20.times do
+  Article.create(
+    title: Faker::Company.catch_phrase,
+    content: fake_content
+  )
 end
